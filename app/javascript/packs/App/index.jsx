@@ -3,10 +3,11 @@
 // of the page.
 
 import React from 'react';
+import styles from './index.scss';
 
 class App extends React.Component {
   state = {
-    steps: ["Do not touch!", "Can't you read?", "This is going to end bad"],
+    steps: ["Do not touch!", "Can't you read?", "This is going to end badly for you"],
     currentStep: 0
   }
 
@@ -20,10 +21,17 @@ class App extends React.Component {
     const { steps, currentStep } = this.state;
 
     return (
-      <div className="App">
+      <div>
         {
           currentStep < 3 && (
-            <button onClick={this.handleClickButton}>{steps[currentStep]}</button>
+            <div className={styles["flex-container"]}>
+              <a
+                className={styles.btn}
+                onClick={this.handleClickButton}
+              >
+                {steps[currentStep]}
+              </a>
+            </div>
           )
         }
       </div>
