@@ -4,9 +4,14 @@
   "dependencies": {
     "@rails/webpacker": "3.4",
     "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.28.11",
+    "postcss-loader": "^2.1.4",
     "prop-types": "^15.6.1",
     "react": "^16.3.2",
-    "react-dom": "^16.3.2"
+    "react-dom": "^16.3.2",
+    "sass-loader": "^7.0.1",
+    "style-loader": "^0.20.3",
+    "webpack-merge": "^4.1.2"
   },
   "devDependencies": {
     "webpack-dev-server": "2.11.2"
