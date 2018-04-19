@@ -3,22 +3,41 @@
 This README would normally document whatever steps are necessary to get the
 application up and running.
 
-Things you may want to cover:
+```
+$ rvm install 2.5.1
+```
 
-* Ruby version
+```
+$ mkdir liam-neeson
+$ cd liam-neeson
+$ rvm use ruby-2.5.1@liam-neeson --ruby-version --create
+$ gem install bundler
+$ gem install nokogiri
+$ gem install rails
+```
 
-* System dependencies
+```
+$ rails new . --webpack=react --skip-active-record -T
+```
 
-* Configuration
+```
+$ rm bin/rails bin/rake
+$ rake app:update:bin
+```
 
-* Database creation
+```ruby
+gem 'foreman', '>= 0.84.0'
+```
 
-* Database initialization
+```
+$ bundle install
+```
 
-* How to run the test suite
+```
+$ echo "web: bundle exec rails s
+webpacker: ./bin/webpack-dev-server" >> Procfile.dev
+```
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```
+foreman start -f Procfile.dev -p 3000
+```
