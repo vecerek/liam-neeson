@@ -1,0 +1,15 @@
+.photos {
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+}
+
+.grid > img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
