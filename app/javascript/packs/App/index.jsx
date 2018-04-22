@@ -19,6 +19,7 @@ class App extends React.Component {
       currentStep: 0,
       requiredPermissions: config.requiredPermissions,
       user: null,
+      postIsLoading: false,
       facebookPostUrl: null
     };
 
@@ -176,13 +177,25 @@ class App extends React.Component {
         const postIds = response.id.split("_");
         const url = `https://facebook.com/${postIds[0]}/posts/${postIds[1]}`;
 
-        this.setState({ facebookPostUrl:  url });
+        this.setState({
+          facebookPostUrl:  url,
+          postIsLoading: false
+        });
       }
     }.bind(this));
+
+    this.setState({ postIsLoading: true });
   }
 
   render() {
-    const { steps, currentStep, requiredPermissions, user, facebookPostUrl } = this.state;
+    const {
+      steps,
+      currentStep,
+      requiredPermissions,
+      user,
+      postIsLoading,
+      facebookPostUrl
+    } = this.state;
     const permissionsMissing = requiredPermissions.length > 0;
     const introButtonTitle = currentStep < 3
       ? steps[currentStep]
@@ -224,7 +237,10 @@ class App extends React.Component {
                     className={styles.btn}
                     onClick={this.handleShareOnFacebook}
                   >
-                    Who do you think you are?
+                    {postIsLoading
+                      ? <i className="fas fa-spinner fa-2x fa-spin" />
+                      : "Who do you think you are?"
+                    }
                   </a>
                 </div>
               </React.Fragment>
