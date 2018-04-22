@@ -16,12 +16,14 @@ class App extends React.Component {
     this.state = {
       steps: ["Do not touch!", "Can't you read?", "This is going to end badly for you"],
       currentStep: 0,
-      user: null
+      user: null,
+      isShared: false
     };
 
     this.fetchUserInfo = this.fetchUserInfo.bind(this);
     this.fetchUserPhotos = this.fetchUserPhotos.bind(this);
     this.fetchUserLocation = this.fetchUserLocation.bind(this);
+    this.handleShareOnFacebook = this.handleShareOnFacebook.bind(this);
   }
 
   componentDidMount() {
@@ -123,8 +125,20 @@ class App extends React.Component {
     });
   }
 
-  handleShareOnFacebook = () => {
-    console.log("Shared on Facebook");
+  handleShareOnFacebook() {
+    const fbPost = {
+      message: "I'm in huge troubles. It seems like I have pissed off Liam Neeson. He's coming for me. \nIf there's anyone who could provide me a temporary shelter, PM me. \n\nPLEASE...",
+      link: "https://liam-neeson.herokuapp.com/"
+    }
+
+    FB.api('/me/feed', 'post', fbPost, function(response) {
+      if (!response || response.error) {
+        console.log('Error occured');
+      } else {
+        console.log('Posted', response);
+        this.setState({ isShared: true });
+      }
+    }.bind(this));
   }
 
   render() {
