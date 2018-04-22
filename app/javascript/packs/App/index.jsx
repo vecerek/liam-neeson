@@ -205,7 +205,7 @@ class App extends React.Component {
       <React.Fragment>
         {permissionsMissing && (
           <div className={styles.centerWrapper}>
-            <div className={styles["flex-container"]}>
+            <div className={styles.flexContainer}>
               <a
                 className={styles.btn}
                 onClick={this.handleClickButton}

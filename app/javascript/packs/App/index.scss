@@ -1,3 +1,9 @@
+@mixin rwd($screen) {
+  @media (min-width: $screen+'px') {
+      @content;
+  }
+}
+
 .centerWrapper {
   display: flex;
   height: 100%;
@@ -5,17 +11,19 @@
   justify-content: center;
 }
 
-.flex-container {
+.flexContainer {
   display: flex;
+  width: 100%;
   align-items: center;
   justify-content: center;
 }
 
 .btn {
-  max-width: 250px;
+  width: 100%;
+  max-width: 50%;
   border-radius: 0px;
   padding: 15px 25px;
-  font-size: 22px;
+  font-size: 4vw;
   text-decoration: none;
   text-transform: uppercase;
   text-align: center;
@@ -25,6 +33,11 @@
   position: relative;
   display: inline-block;
   cursor: pointer;
+
+  @include rwd(992) {
+    max-width: 250px;
+    font-size: 2vw;
+  }
 
   background-color: #e74c3c;
   box-shadow: 0px 10px 0px 0px #CE3323;
@@ -45,6 +58,22 @@
 .results {
   margin-top: 20px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   grid-gap: 25px;
+
+  @include rwd(768) {
+    grid-template-columns: repeat(auto-fill, minmax(384px, 1fr));
+  }
+
+  @include rwd(992) {
+    grid-template-columns: repeat(auto-fill, minmax(496px, 1fr));
+  }
+
+  @include rwd(1200) {
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  }
+
+  @include rwd(1600) {
+    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+  }
 }

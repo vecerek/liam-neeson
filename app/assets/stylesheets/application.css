@@ -23,7 +23,8 @@
  }
 
  body {
-  width: 100;
+  width: 100%;
+  margin: 0;
   font-family: 'Roboto Condensed', 'sans-serif';
 }
 
