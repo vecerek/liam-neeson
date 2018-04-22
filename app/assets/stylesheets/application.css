@@ -27,4 +27,7 @@
   font-family: 'Roboto Condensed', 'sans-serif';
 }
 
-#root, #root > div { height: 100%; }
+#root, #root > div {
+  height: 100%;
+  text-align: center;
+}

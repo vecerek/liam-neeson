@@ -147,6 +147,12 @@ class App extends React.Component {
         {user && (
           <React.Fragment>
             <LiamNeeson />
+            <a
+              className={styles.btn}
+              onClick={this.handleShareOnFacebook}
+            >
+              Run for your life
+            </a>
             <div className={styles.results}>
               {user.firstName && (
                 <User.Profile
@@ -164,12 +170,6 @@ class App extends React.Component {
                 />
               )}
             </div>
-            <a
-              className={styles.btn}
-              onClick={this.handleShareOnFacebook}
-            >
-              Run for your life
-            </a>
           </React.Fragment>
         )}
       </React.Fragment>
