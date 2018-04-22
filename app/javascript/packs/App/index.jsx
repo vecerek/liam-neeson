@@ -6,6 +6,7 @@ import React from 'react';
 import { GoogleApiWrapper } from 'google-maps-react';
 import * as User from '../User';
 import LiamNeeson from '../LiamNeeson';
+import GoodLuck from '../GoodLuck';
 import config from './config';
 import styles from './index.scss';
 
@@ -17,7 +18,7 @@ class App extends React.Component {
       steps: ["Do not touch!", "Can't you read?", "This is going to end badly for you"],
       currentStep: 0,
       user: null,
-      isShared: false
+      facebookPostUrl: null
     };
 
     this.fetchUserInfo = this.fetchUserInfo.bind(this);
@@ -61,10 +62,6 @@ class App extends React.Component {
      }(document, 'script', 'facebook-jssdk'));
   }
 
-  componentWillMount() {
-    console.log("Component will mount", this.state);
-  }
-
   fetchUserInfo() {
     FB.api('/me', {fields: ["first_name", "last_name", "email", "location", "picture.width(500).height(500)"]}, function(response) {
       const user = Object.assign({}, this.state.user);
@@ -95,7 +92,6 @@ class App extends React.Component {
     fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${loc.replace(" ", "+")}&key=${config.googleApiKey}`)
       .then(results => results.json())
       .then(data => {
-        console.log(data);
         const user = Object.assign({}, this.state.user);
         const location = data.results[0].geometry.location;
 
@@ -133,16 +129,18 @@ class App extends React.Component {
 
     FB.api('/me/feed', 'post', fbPost, function(response) {
       if (!response || response.error) {
-        console.log('Error occured');
+        console.log('Error occured', response);
       } else {
-        console.log('Posted', response);
-        this.setState({ isShared: true });
+        const postIds = response.id.split("_");
+        const url = `https://facebook.com/${postIds[0]}/posts/${postIds[1]}`;
+
+        this.setState({ facebookPostUrl:  url });
       }
     }.bind(this));
   }
 
   render() {
-    const { steps, currentStep, user } = this.state;
+    const { steps, currentStep, user, facebookPostUrl } = this.state;
 
     return (
       <React.Fragment>
@@ -160,15 +158,31 @@ class App extends React.Component {
         )}
         {user && (
           <React.Fragment>
-            <LiamNeeson />
-            <div>
-              <a
-                className={styles.btn}
-                onClick={this.handleShareOnFacebook}
-              >
-                Run for your life
-              </a>
-            </div>
+            {facebookPostUrl ?
+              <React.Fragment>
+                <GoodLuck />
+                <div>
+                  <a
+                    className={styles.btn}
+                    href={facebookPostUrl}
+                    target="_blank"
+                  >
+                    Run for your life
+                  </a>
+                </div>
+              </React.Fragment> :
+              <React.Fragment>
+                <LiamNeeson />
+                <div>
+                  <a
+                    className={styles.btn}
+                    onClick={this.handleShareOnFacebook}
+                  >
+                    Who do you think you are?
+                  </a>
+                </div>
+              </React.Fragment>
+            }
             <div className={styles.results}>
               {user.firstName && (
                 <User.Profile
