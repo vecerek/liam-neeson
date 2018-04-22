@@ -17,10 +17,14 @@ class App extends React.Component {
     this.state = {
       steps: ["Do not touch!", "Can't you read?", "This is going to end badly for you"],
       currentStep: 0,
+      requiredPermissions: config.requiredPermissions,
       user: null,
       facebookPostUrl: null
     };
 
+    this.checkPermissions = this.checkPermissions.bind(this);
+    this.reRequestPermissions = this.reRequestPermissions.bind(this);
+    this.fetchUserData = this.fetchUserData.bind(this);
     this.fetchUserInfo = this.fetchUserInfo.bind(this);
     this.fetchUserPhotos = this.fetchUserPhotos.bind(this);
     this.fetchUserLocation = this.fetchUserLocation.bind(this);
@@ -46,8 +50,7 @@ class App extends React.Component {
         this.setState({ user: user });
 
         if (user) {
-          this.fetchUserInfo();
-          this.fetchUserPhotos();
+          this.fetchUserData();
         }
       });
 
@@ -62,16 +65,33 @@ class App extends React.Component {
      }(document, 'script', 'facebook-jssdk'));
   }
 
+  checkPermissions() {
+    FB.api(
+      "/me/permissions",
+      function (response) {
+        if (response && !response.error) {
+          const requiredPermissions = response.data
+            .filter(perm => perm.status === "declined")
+            .map(perm => perm.permission);
+
+          this.setState({ requiredPermissions: requiredPermissions });
+        }
+      }.bind(this)
+    );
+  }
+
   fetchUserInfo() {
     FB.api('/me', {fields: ["first_name", "last_name", "email", "location", "picture.width(500).height(500)"]}, function(response) {
       const user = Object.assign({}, this.state.user);
-      const { first_name, last_name, email, location, picture } = response;
-      this.fetchUserLocation(location.name);
+      const { first_name, last_name, location, picture } = response;
+
+      if (location) {
+        this.fetchUserLocation(location.name);
+      }
 
       this.setState({ user: Object.assign({}, user, {
         firstName: first_name,
         lastName: last_name,
-        email,
         pictureUrl: picture.data.url
       })})
     }.bind(this));
@@ -95,25 +115,47 @@ class App extends React.Component {
         const user = Object.assign({}, this.state.user);
         const location = data.results[0].geometry.location;
 
-        this.setState({ user: Object.assign({}, user, {
+        this.setState({
+          user: Object.assign({}, user, {
           location: {
             name: "Liam Neeson meeting place",
             lat: location.lat,
             long: location.lng
           }
-        }) })
+        })});
       });
   }
 
+  fetchUserData() {
+    this.checkPermissions();
+    this.fetchUserInfo();
+    this.fetchUserPhotos();
+  }
+
+  reRequestPermissions() {
+    FB.login(({ status }) => {
+        if (status === "connected") {
+          this.fetchUserData();
+        }
+      },
+      {
+        scope: this.state.requiredPermissions.join(','),
+        auth_type: 'rerequest'
+      }
+    );
+  }
+
   facebookLogin = () => {
-    FB.login(() => {}, {scope: 'public_profile,email,user_location,user_photos,publish_actions'});
+    FB.login(() => {}, {scope: config.requiredPermissions.join(',')});
   };
 
   handleClickButton = () => {
-    if (this.state.currentStep === 2) {
-      this.facebookLogin();
-    } else {
+    const { currentStep } = this.state;
 
+    if (currentStep === 2) {
+      this.facebookLogin();
+    } else if(currentStep > 2) {
+      this.reRequestPermissions();
     }
 
     this.setState((prevState, _) => {
@@ -140,23 +182,27 @@ class App extends React.Component {
   }
 
   render() {
-    const { steps, currentStep, user, facebookPostUrl } = this.state;
+    const { steps, currentStep, requiredPermissions, user, facebookPostUrl } = this.state;
+    const permissionsMissing = requiredPermissions.length > 0;
+    const introButtonTitle = currentStep < 3
+      ? steps[currentStep]
+      : "All-in or go home";
 
     return (
       <React.Fragment>
-        {!user && currentStep < 3 && (
+        {permissionsMissing && (
           <div className={styles.centerWrapper}>
             <div className={styles["flex-container"]}>
               <a
                 className={styles.btn}
                 onClick={this.handleClickButton}
               >
-                {steps[currentStep]}
+                {introButtonTitle}
               </a>
             </div>
           </div>
         )}
-        {user && (
+        {user && !permissionsMissing && (
           <React.Fragment>
             {facebookPostUrl ?
               <React.Fragment>
@@ -190,7 +236,7 @@ class App extends React.Component {
                   pictureUrl={user.pictureUrl}
                 />
               )}
-              {user.photos && (
+              {user.photos && user.photos.length > 0 && (
                 <User.Photos photos={user.photos} />
               )}
               {user.location && (
