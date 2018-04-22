@@ -38,7 +38,7 @@ export default class Location extends React.Component {
 
     return (
       <div className={styles.loc}>
-        <h3>We know where you are</h3>
+        <h3>I know where you live</h3>
         <div ref="map" style={style}>
           loading map...
         </div>

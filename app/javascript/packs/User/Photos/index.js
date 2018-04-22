@@ -6,7 +6,7 @@ export default function Photos(props) {
   const { photos } = props;
 
   return <div className={styles.photos}>
-    <h3>We know what you do</h3>
+    <h3>I know what you do</h3>
     <div className={styles.grid}>
       {photos.map(url => <img key={url} src={url} />)}
     </div>

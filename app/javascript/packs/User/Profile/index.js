@@ -4,7 +4,7 @@ import styles from './index.scss';
 
 export default function Profile (props) {
   return <div className={styles.profile}>
-    <h3>We know who you are</h3>
+    <h3>I know who you are</h3>
     <img
       src={props.pictureUrl}
       title="Our most recent target"
