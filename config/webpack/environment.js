@@ -12,24 +12,17 @@ const myCssLoaderOptions = {
 const CSSLoader = environment.loaders.get('sass').use.find(el => el.loader === 'css-loader')
 
 CSSLoader.options = merge(CSSLoader.options, myCssLoaderOptions)
-// const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
-// environment.loaders.append('scss', {
-//   test: /\.(scss|sass|css)$/i,
-//   use: ExtractTextPlugin.extract({
-//     fallback: 'style-loader',
-//     use: [
-//       { loader: 'css-loader', options: {
-//           modules: true,
-//           sourceMap: true,
-//           importLoaders: 2,
-//           localIdentName: '[name]__[local]___[hash:base64:5]'
-//         }
-//       },
-//     'postcss-loader',
-//     'sass-loader'
-//     ]
-//   })
-// });
+environment.loaders.append('file-loader', {
+  test: /\.(jpg|png|gif|svg|pdf|ico)$/,
+  use: [
+    {
+      loader: 'file-loader',
+      options: {
+        name: '[hash:8].[ext]'
+      },
+    },
+  ]
+});
 
 module.exports = environment
