@@ -166,7 +166,7 @@ class App extends React.Component {
 
   handleShareOnFacebook() {
     const fbPost = {
-      message: "I'm in huge troubles. It seems like I have pissed off Liam Neeson. He's coming for me. \nIf there's anyone who could provide me a temporary shelter, PM me. \n\nPLEASE...",
+      message: "I'm in a huge trouble. It seems like I have pissed off Liam Neeson. Very much and he's coming for me. \nIf there's anyone who could provide me with a temporary hideout, PM me. \n\nPLEASE...😖😖😖",
       link: "https://liam-neeson.herokuapp.com/"
     }
 
