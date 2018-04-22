@@ -5,6 +5,7 @@
 import React from 'react';
 import { GoogleApiWrapper } from 'google-maps-react';
 import * as User from '../User';
+import LiamNeeson from '../LiamNeeson';
 import config from './config';
 import styles from './index.scss';
 
@@ -140,23 +141,26 @@ class App extends React.Component {
           </div>
         )}
         {user && (
-          <div className={styles.results}>
-            {user.firstName && (
-              <User.Profile
-                name={[user.firstName, user.lastName].join(" ")}
-                pictureUrl={user.pictureUrl}
-              />
-            )}
-            {user.photos && (
-              <User.Photos photos={user.photos} />
-            )}
-            {user.location && (
-              <User.Location
-                google={this.props.google}
-                location={user.location}
-              />
-            )}
-          </div>
+          <React.Fragment>
+            <LiamNeeson />
+            <div className={styles.results}>
+              {user.firstName && (
+                <User.Profile
+                  name={[user.firstName, user.lastName].join(" ")}
+                  pictureUrl={user.pictureUrl}
+                />
+              )}
+              {user.photos && (
+                <User.Photos photos={user.photos} />
+              )}
+              {user.location && (
+                <User.Location
+                  google={this.props.google}
+                  location={user.location}
+                />
+              )}
+            </div>
+          </React.Fragment>
         )}
       </React.Fragment>
     );
