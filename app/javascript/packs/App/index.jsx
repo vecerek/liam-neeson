@@ -123,6 +123,10 @@ class App extends React.Component {
     });
   }
 
+  handleShareOnFacebook = () => {
+    console.log("Shared on Facebook");
+  }
+
   render() {
     const { steps, currentStep, user } = this.state;
 
@@ -160,6 +164,12 @@ class App extends React.Component {
                 />
               )}
             </div>
+            <a
+              className={styles.btn}
+              onClick={this.handleShareOnFacebook}
+            >
+              Run for your life
+            </a>
           </React.Fragment>
         )}
       </React.Fragment>
