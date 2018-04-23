@@ -1,8 +1,8 @@
 # README
 
-This little project is the result of a school assignment for Identity and Access Management class at Aalbor University. It shows how Facebook Login and Facebook Graph API can be used to retrieve user data and use them in a "meaningful" way. In this specific case, we decided to provide the user data to Liam Neeson - just to make his life easier when lookinf for his next target.
+This little project is the result of a school assignment for Identity and Access Management class at Aalbor University. It shows how Facebook Login and Facebook Graph API can be used to retrieve user data and use them in a "meaningful" way. In this specific case, we decided to provide the user data to Liam Neeson - just to make his life easier when looking for his next target.
 
-The front-end has been implemented using React 16. The assets are compiled to a single bundle and being served by a Rails web app running on Heroku. This repo should serve to anyone with the intention to create any project with such a setup. Hence, we also specify how the project has been set up.
+The front-end has been implemented using React 16. The assets are compiled to a single bundle using Webpack 3 and being served by a Rails 5 web app running on Heroku. This repo should serve to anyone with the intention to create any project with such a setup. Hence, we also specify the steps the project has been set up.
 
 ## Setting up the web app
 
