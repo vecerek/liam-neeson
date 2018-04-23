@@ -35,10 +35,10 @@ class App extends React.Component {
   componentDidMount() {
     window.fbAsyncInit = function() {
       FB.init({
-        appId      : '193797768067544',
+        appId      : config.facebookAppId,
         cookie     : true,
         xfbml      : true,
-        version    : 'v2.12'
+        version    : config.fbGraphApiVersion
       });
 
       window.FB.Event.subscribe('auth.statusChange', ({ authResponse }) => {
